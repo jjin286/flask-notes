@@ -8,9 +8,29 @@
   <p>First name: {{ user.first_name }}</p>
   <p>Last name: {{ user.last_name }}</p>
 
-  <form action="/logout" method="POST">
+  <form>
     {{form.hidden_tag()}}
-
-    <button type="submit">Logout</button>
+    <button type="submit" formaction="/logout" formmethod="POST">Logout</button>
+    <button
+      type="submit"
+      formaction="/users/{{ user.username }}/delete"
+      formmethod="POST">
+      Delete Account</button>
   </form>
+
+  <h3>Notes</h3>
+  <ul>
+    {% for note in user.notes %}
+      <li>
+        <a href="/notes/{{ note.id }}/update">{{ note.title }}</a>
+        <form action="/notes/{{ note.id }}/delete" method="POST">
+          {{form.hidden_tag()}}
+          <button type="submit">Delete note</button>
+        </form>
+      </li>
+    {% endfor %}
+  </ul>
+  <a href="/users/{{ user.username }}/notes/add">Add note</a>
+
+
 {% endblock %}
